@@ -267,7 +267,7 @@ Structural Time:
 
 See how Structural Time compares with traditional and logical clocks:
 
-[📊 Structural Time — Comparison Table](docs/Structural-Time-Comparison.md)
+[📊 Structural Time — Comparison Table](Structural-Time-Comparison.md)
 
 ---
 
