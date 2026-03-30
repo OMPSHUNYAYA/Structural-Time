@@ -13,6 +13,8 @@
 ![Offline-Ready](https://img.shields.io/badge/Offline-Convergence%20Enabled-blue)
 ![Open-Standard](https://img.shields.io/badge/Reference%20Implementation-Open%20Standard-blue)
 
+![Verify](https://github.com/OMPSHUNYAYA/Structural-Time/actions/workflows/structural-time-verify.yml/badge.svg)
+
 ---
 
 Time without clocks.  
