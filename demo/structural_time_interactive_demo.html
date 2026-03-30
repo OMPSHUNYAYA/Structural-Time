@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structural Time Interactive Demo</title>
+  <style>
+    :root {
+      --bg: #08101d;
+      --panel: #10192b;
+      --panel2: #16233a;
+      --border: #28405f;
+      --text: #e8eefc;
+      --muted: #9fb0d1;
+      --accent: #6ea8ff;
+      --good: #27c281;
+      --warn: #ffb020;
+      --bad: #ff5d73;
+      --shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, #07101c 0%, #0a1322 100%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .formula {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: #dfe8ff;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 8px;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #0f1728;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button,
+    select {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0d1627;
+      color: var(--text);
+      padding: 11px 12px;
+      font-size: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.06s ease, opacity 0.2s ease;
+      background: linear-gradient(180deg, #16304e 0%, #112742 100%);
+      border-color: #2d4a73;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button.good {
+      background: linear-gradient(180deg, #126543 0%, #0f5338 100%);
+      border-color: #1f8c62;
+    }
+
+    button.warn {
+      background: linear-gradient(180deg, #694a10 0%, #593e0f 100%);
+      border-color: #a97818;
+    }
+
+    button.bad {
+      background: linear-gradient(180deg, #672031 0%, #531828 100%);
+      border-color: #a03b52;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .control-box,
+    .info-box,
+    .node-box,
+    .metric,
+    .event,
+    .note-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      min-width: 0;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .metric .value {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.25;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .node-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .state-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      flex-shrink: 0;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .good {
+      color: var(--good);
+    }
+
+    .warnText {
+      color: var(--warn);
+    }
+
+    .badText {
+      color: var(--bad);
+    }
+
+    .event-list {
+      display: grid;
+      gap: 8px;
+      max-height: 380px;
+      overflow: auto;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .event.step-active {
+      border-color: var(--accent);
+      background: rgba(110, 168, 255, 0.08);
+    }
+
+    .event.step-done {
+      border-color: rgba(39, 194, 129, 0.35);
+    }
+
+    .event small {
+      color: var(--muted);
+      display: block;
+      line-height: 1.3;
+    }
+
+    .compare-box {
+      display: grid;
+      gap: 12px;
+    }
+
+    .traditional-box {
+      border: 1px solid rgba(255, 176, 32, 0.35);
+      background: rgba(255, 176, 32, 0.04);
+    }
+
+    .structural-box {
+      border: 1px solid rgba(39, 194, 129, 0.35);
+      background: rgba(39, 194, 129, 0.04);
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .status-chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #0f1728;
+      color: var(--muted);
+    }
+
+    .result-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .foot {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .main-grid,
+      .grid2 {
+        grid-template-columns: 1fr;
+      }
+
+      .node-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 780px) {
+      .buttons,
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .topline {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card topline">
+      <div>
+        <div class="eyebrow">Structural Time • Interactive Demo</div>
+      </div>
+      <div class="formula">correctness = structure | structural_time = count(accepted_structural_transitions)</div>
+    </section>
+
+    <section class="hero">
+      <div class="card panel">
+        <h1>Structural Time Interactive Demo</h1>
+        <p class="lead">Three independent offline nodes receive the same structural events in different orders. Structural Time advances only through accepted structural transitions.</p>
+
+        <div class="badges">
+          <span class="badge">No timestamps</span>
+          <span class="badge">No synchronization</span>
+          <span class="badge">No coordinator</span>
+          <span class="badge">Same accepted structure -&gt; same time</span>
+        </div>
+
+        <div class="control-box" style="margin-top:14px;">
+          <h3>Scenario</h3>
+          <div class="grid2" style="margin-top:10px; align-items:end;">
+            <div>
+              <label for="scenarioSelect" class="muted" style="display:block; margin-bottom:7px; font-size:13px;">Choose demo scenario</label>
+              <select id="scenarioSelect">
+                <option value="base">Base Convergence</option>
+                <option value="conflict">Conflict / Abstain</option>
+              </select>
+            </div>
+            <div class="buttons" style="margin-top:0; grid-template-columns:repeat(3, minmax(0, 1fr));">
+              <button class="good" id="stepBtn">Step</button>
+              <button class="warn" id="playBtn">Auto Play</button>
+              <button class="bad" id="resetBtn">Reset</button>
+            </div>
+          </div>
+
+          <div class="note-box" style="margin-top:12px;">
+            <strong>Demo rule</strong><br />
+            Structural time advances only when an accepted structural transition changes structural truth. Duplicate events produce <span class="warnText">NO_CHANGE</span>. Invalid or conflicting events produce <span class="badText">ABSTAIN</span>.
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="label">Scenario</div>
+            <div class="value" id="metricScenario">Base</div>
+          </div>
+          <div class="metric">
+            <div class="label">Current Step</div>
+            <div class="value mono" id="metricStep">0 / 0</div>
+          </div>
+          <div class="metric">
+            <div class="label">Traditional View</div>
+            <div class="value" id="metricTraditional">Divergent</div>
+          </div>
+          <div class="metric">
+            <div class="label">Structural View</div>
+            <div class="value" id="metricStructural">Pending</div>
+          </div>
+          <div class="metric">
+            <div class="label">Structural Time Equal</div>
+            <div class="value" id="metricTimeEqual">--</div>
+          </div>
+          <div class="metric">
+            <div class="label">Truth Identity Equal</div>
+            <div class="value" id="metricTruthEqual">--</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <h2>What this proves</h2>
+        <div class="compare-box">
+          <div class="info-box traditional-box">
+            <h3>Traditional Order-First Logic</h3>
+            <p class="lead">Early confirms, missing accounts, or conflicting claims create unstable intermediate views. Time and order appear necessary.</p>
+            <div class="status-row">
+              <span class="status-chip">order-dependent</span>
+              <span class="status-chip">time-sensitive</span>
+              <span class="status-chip">coordination-hungry</span>
+            </div>
+          </div>
+
+          <div class="info-box structural-box">
+            <h3>Structural Time Logic</h3>
+            <p class="lead">Nodes safely abstain on invalid or conflicting structure, ignore duplicates, and converge only when sufficient accepted structure is present.</p>
+            <div class="status-row">
+              <span class="status-chip">order-free convergence</span>
+              <span class="status-chip">truth-sensitive</span>
+              <span class="status-chip">offline-safe</span>
+            </div>
+          </div>
+
+          <div class="result-box mono" id="summaryBox">Waiting to begin.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card panel" style="margin-bottom:14px;">
+      <h2>Node Event Streams</h2>
+      <p class="lead">Each node receives events in a different order. The left badge shows the last local status: <span class="good">ADVANCED</span>, <span class="warnText">NO_CHANGE</span>, or <span class="badText">ABSTAIN</span>.</p>
+      <div class="node-grid" id="nodeGrid"></div>
+    </section>
+
+    <section class="main-grid">
+      <div class="card panel">
+        <h2>Traditional Order-First View</h2>
+        <p class="lead">This panel emphasizes why sequence-first reasoning creates divergence during intermediate processing.</p>
+        <div class="result-box" id="traditionalBox">Waiting to begin.</div>
+      </div>
+
+      <div class="card panel">
+        <h2>Structural Convergence View</h2>
+        <p class="lead">This panel shows structural outcomes across nodes, including tick equality, state-hash equality, or visible conflict.</p>
+        <div class="result-box" id="structuralBox">Waiting to begin.</div>
+      </div>
+    </section>
+
+    <section class="card panel">
+      <div class="foot">
+        <strong>Research Notice</strong><br /><br />
+        This is a reference demonstration of Structural Time, inspired by the Shunyaya Framework. It is designed to show that independent nodes can converge to the same structural time without shared clocks, ordering, or synchronization when correctness is derived from structure.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    class StructuralTimeNode {
+      constructor(name) {
+        this.name = name;
+        this.tick = 0;
+        this.accounts = new Set();
+        this.pending = {};
+        this.confirmed = {};
+        this.seenHashes = new Set();
+        this.lastStatus = "PENDING";
+        this.lastReason = "Waiting";
+      }
+
+      canonicalState() {
+        const sortObject = (obj) =>
+          Object.fromEntries(
+            Object.entries(obj).sort(([a], [b]) => a.localeCompare(b))
+          );
+
+        return {
+          accounts: [...this.accounts].sort(),
+          pending: sortObject(this.pending),
+          confirmed: sortObject(this.confirmed)
+        };
+      }
+
+      computeHashSync(text) {
+        let h1 = 0xdeadbeef ^ text.length;
+        let h2 = 0x41c6ce57 ^ text.length;
+
+        for (let i = 0; i < text.length; i += 1) {
+          const ch = text.charCodeAt(i);
+          h1 = Math.imul(h1 ^ ch, 2654435761);
+          h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+
+        h1 =
+          Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+          Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+
+        h2 =
+          Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+          Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+        return ((4294967296 * (2097151 & h2)) + (h1 >>> 0))
+          .toString(16)
+          .padStart(16, "0");
+      }
+
+      hash() {
+        return this.computeHashSync(JSON.stringify(this.canonicalState()));
+      }
+
+      resolve(event) {
+        const before = this.hash();
+        const status = this.apply(event);
+        const after = this.hash();
+
+        if (status === "ABSTAIN") {
+          this.lastStatus = "ABSTAIN";
+          return this.out("ABSTAIN", event, before);
+        }
+
+        if (status === "ADVANCED") {
+          if (!this.seenHashes.has(after)) {
+            this.tick += 1;
+            this.seenHashes.add(after);
+          }
+
+          this.lastStatus = "ADVANCED";
+          return this.out("ADVANCED", event, after);
+        }
+
+        this.lastStatus = "NO_CHANGE";
+        return this.out("NO_CHANGE", event, before);
+      }
+
+      apply(event) {
+        const op = event.op;
+
+        if (op === "OPEN") {
+          if (!event.account) {
+            this.lastReason = "OPEN requires an account";
+            return "ABSTAIN";
+          }
+
+          if (this.accounts.has(event.account)) {
+            this.lastReason = `Account already open: ${event.account}`;
+            return "NO_CHANGE";
+          }
+
+          this.accounts.add(event.account);
+          this.lastReason = `Opened account: ${event.account}`;
+          return "ADVANCED";
+        }
+
+        if (op === "MOVE") {
+          if (!event.tx_id || !event.from_acct || !event.to_acct) {
+            this.lastReason = "MOVE requires tx_id, from_acct, and to_acct";
+            return "ABSTAIN";
+          }
+
+          if (event.amount == null || event.amount <= 0) {
+            this.lastReason = "MOVE requires a positive amount";
+            return "ABSTAIN";
+          }
+
+          if (!this.accounts.has(event.from_acct) || !this.accounts.has(event.to_acct)) {
+            this.lastReason = "MOVE requires both accounts to be open";
+            return "ABSTAIN";
+          }
+
+          const proposal = {
+            from: event.from_acct,
+            to: event.to_acct,
+            amount: event.amount
+          };
+
+          if (this.pending[event.tx_id]) {
+            const sameProposal =
+              JSON.stringify(this.pending[event.tx_id]) === JSON.stringify(proposal);
+
+            if (sameProposal) {
+              this.lastReason = `Duplicate MOVE ignored: ${event.tx_id}`;
+              return "NO_CHANGE";
+            }
+
+            this.lastReason = `Conflicting MOVE detected: ${event.tx_id}`;
+            return "ABSTAIN";
+          }
+
+          if (this.confirmed[event.tx_id]) {
+            const sameProposal =
+              JSON.stringify(this.confirmed[event.tx_id]) === JSON.stringify(proposal);
+
+            if (sameProposal) {
+              this.lastReason = `Known confirmed MOVE ignored: ${event.tx_id}`;
+              return "NO_CHANGE";
+            }
+
+            this.lastReason = `Conflict with confirmed MOVE: ${event.tx_id}`;
+            return "ABSTAIN";
+          }
+
+          this.pending[event.tx_id] = proposal;
+          this.lastReason = `Created pending MOVE: ${event.tx_id}`;
+          return "ADVANCED";
+        }
+
+        if (op === "CONFIRM") {
+          if (!event.tx_id) {
+            this.lastReason = "CONFIRM requires tx_id";
+            return "ABSTAIN";
+          }
+
+          if (this.confirmed[event.tx_id]) {
+            this.lastReason = `Already confirmed: ${event.tx_id}`;
+            return "NO_CHANGE";
+          }
+
+          if (!this.pending[event.tx_id]) {
+            this.lastReason = `No pending tx to confirm: ${event.tx_id}`;
+            return "ABSTAIN";
+          }
+
+          this.confirmed[event.tx_id] = this.pending[event.tx_id];
+          delete this.pending[event.tx_id];
+          this.lastReason = `Confirmed tx: ${event.tx_id}`;
+          return "ADVANCED";
+        }
+
+        this.lastReason = `Unknown operation: ${op}`;
+        return "ABSTAIN";
+      }
+
+      out(status, event, hash) {
+        return {
+          node: this.name,
+          status,
+          tick: this.tick,
+          hash: hash.slice(0, 10),
+          event,
+          state: this.canonicalState(),
+          reason: this.lastReason
+        };
+      }
+    }
+
+    const scenarios = {
+      base: {
+        label: "Base Convergence",
+        nodes: {
+          "Node-A": [
+            { op: "OPEN", account: "A" },
+            { op: "OPEN", account: "B" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ],
+          "Node-B": [
+            { op: "OPEN", account: "B" },
+            { op: "OPEN", account: "A" },
+            { op: "CONFIRM", tx_id: "tx1" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ],
+          "Node-C": [
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "OPEN", account: "A" },
+            { op: "OPEN", account: "B" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ]
+        }
+      },
+      conflict: {
+        label: "Conflict / Abstain",
+        nodes: {
+          "Node-A": [
+            { op: "OPEN", account: "A" },
+            { op: "OPEN", account: "B" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ],
+          "Node-B": [
+            { op: "OPEN", account: "A" },
+            { op: "OPEN", account: "B" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 200 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ],
+          "Node-C": [
+            { op: "OPEN", account: "B" },
+            { op: "OPEN", account: "A" },
+            { op: "CONFIRM", tx_id: "tx1" },
+            { op: "MOVE", tx_id: "tx1", from_acct: "A", to_acct: "B", amount: 100 },
+            { op: "CONFIRM", tx_id: "tx1" }
+          ]
+        }
+      }
+    };
+
+    const app = {
+      nodes: {},
+      scenarioKey: "base",
+      pointers: {},
+      results: {},
+      maxSteps: 0,
+      autoTimer: null,
+      autoRunning: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function initScenario(key) {
+      clearInterval(app.autoTimer);
+      app.autoRunning = false;
+      $("playBtn").textContent = "Auto Play";
+
+      app.scenarioKey = key;
+      app.nodes = {};
+      app.pointers = {};
+      app.results = {};
+      app.maxSteps = 0;
+
+      const scenario = scenarios[key];
+
+      Object.keys(scenario.nodes).forEach((name) => {
+        app.nodes[name] = new StructuralTimeNode(name);
+        app.pointers[name] = 0;
+        app.results[name] = [];
+        app.maxSteps = Math.max(app.maxSteps, scenario.nodes[name].length);
+      });
+
+      renderAll();
+    }
+
+    function stepAll() {
+      const scenario = scenarios[app.scenarioKey];
+      let progressed = false;
+
+      Object.keys(scenario.nodes).forEach((name) => {
+        const idx = app.pointers[name];
+        const events = scenario.nodes[name];
+
+        if (idx < events.length) {
+          const event = events[idx];
+          const result = app.nodes[name].resolve(event);
+          app.results[name].push(result);
+          app.pointers[name] += 1;
+          progressed = true;
+        }
+      });
+
+      renderAll();
+
+      if (!progressed) {
+        clearInterval(app.autoTimer);
+        app.autoRunning = false;
+        $("playBtn").textContent = "Auto Play";
+      }
+    }
+
+    function togglePlay() {
+      if (app.autoRunning) {
+        clearInterval(app.autoTimer);
+        app.autoRunning = false;
+        $("playBtn").textContent = "Auto Play";
+        return;
+      }
+
+      app.autoRunning = true;
+      $("playBtn").textContent = "Pause";
+
+      app.autoTimer = setInterval(() => {
+        const scenario = scenarios[app.scenarioKey];
+        const complete = Object.keys(scenario.nodes).every(
+          (name) => app.pointers[name] >= scenario.nodes[name].length
+        );
+
+        if (complete) {
+          clearInterval(app.autoTimer);
+          app.autoRunning = false;
+          $("playBtn").textContent = "Auto Play";
+          return;
+        }
+
+        stepAll();
+      }, 900);
+    }
+
+    function statusColor(status) {
+      if (status === "ADVANCED") return "var(--good)";
+      if (status === "NO_CHANGE") return "var(--warn)";
+      if (status === "ABSTAIN") return "var(--bad)";
+      return "var(--accent)";
+    }
+
+    function eventText(event) {
+      if (event.op === "OPEN") {
+        return `OPEN(${event.account})`;
+      }
+
+      if (event.op === "MOVE") {
+        return `MOVE(${event.tx_id}, ${event.from_acct} -> ${event.to_acct}, ${event.amount})`;
+      }
+
+      if (event.op === "CONFIRM") {
+        return `CONFIRM(${event.tx_id})`;
+      }
+
+      return JSON.stringify(event);
+    }
+
+    function renderNodes() {
+      const scenario = scenarios[app.scenarioKey];
+
+      $("nodeGrid").innerHTML = Object.keys(scenario.nodes).map((name) => {
+        const node = app.nodes[name];
+        const pointer = app.pointers[name];
+        const events = scenario.nodes[name];
+        const last = app.results[name][app.results[name].length - 1];
+        const lastStatus = last ? last.status : "PENDING";
+        const dotColor = statusColor(lastStatus);
+
+        const list = events.map((event, idx) => {
+          let cls = "";
+          if (idx < pointer) cls = "step-done";
+          if (idx === pointer) cls = "step-active";
+
+          const prior = app.results[name][idx];
+
+          return `
+            <div class="event ${cls}">
+              <div class="mono">${idx + 1}</div>
+              <div>
+                <div class="mono">${eventText(event)}</div>
+                <small>${prior ? prior.reason : "Waiting"}</small>
+              </div>
+              <div class="mono" style="color:${prior ? statusColor(prior.status) : "var(--muted)"}; font-weight:700;">
+                ${prior ? prior.status : "..."}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="node-box">
+            <div class="node-head">
+              <div style="min-width:0;">
+                <h3 style="margin:0;">${name}</h3>
+                <div class="muted mono" style="overflow-wrap:anywhere;">tick=${node.tick} | hash=${node.hash().slice(0, 10)}</div>
+              </div>
+              <span class="state-pill">
+                <span class="dot" style="background:${dotColor}"></span>${lastStatus}
+              </span>
+            </div>
+            <div class="event-list">${list}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderTraditional() {
+      const scenario = scenarios[app.scenarioKey];
+
+      const lines = Object.keys(scenario.nodes).map((name) => {
+        const processed = app.pointers[name];
+        const prior = app.results[name];
+        const abstains = prior.filter((r) => r.status === "ABSTAIN").length;
+        const noChange = prior.filter((r) => r.status === "NO_CHANGE").length;
+        const advanced = prior.filter((r) => r.status === "ADVANCED").length;
+
+        return `<div class="mono">${name}: processed=${processed}, advanced=${advanced}, no_change=${noChange}, abstain=${abstains}</div>`;
+      }).join("");
+
+      const message = app.scenarioKey === "base"
+        ? "Traditional order-first reasoning would treat early confirms or early moves as disruptive. Structural Time safely abstains, waits, and later converges."
+        : "Traditional order-first reasoning now encounters conflicting transaction values. Structural Time makes the conflict visible and refuses false convergence.";
+
+      $("traditionalBox").innerHTML = `
+        <div>${message}</div>
+        <div style="margin-top:12px; display:grid; gap:8px;">${lines}</div>
+      `;
+    }
+
+    function renderStructural() {
+      const hashes = Object.values(app.nodes).map((node) => node.hash().slice(0, 10));
+      const ticks = Object.values(app.nodes).map((node) => node.tick);
+      const allEqualHash = hashes.every((hash) => hash === hashes[0]);
+      const allEqualTick = ticks.every((tick) => tick === ticks[0]);
+
+      const scenario = scenarios[app.scenarioKey];
+      const complete = Object.keys(scenario.nodes).every(
+        (name) => app.pointers[name] >= scenario.nodes[name].length
+      );
+
+      const maxPointer = Math.max(...Object.values(app.pointers));
+      const anyProgress = maxPointer > 0;
+
+      let verdict = "Pending";
+      let detail = "Nodes are still processing.";
+
+      if (complete && app.scenarioKey === "base" && allEqualHash && allEqualTick) {
+        verdict = "Converged";
+        detail = "All nodes reached the same structural state hash and the same structural time tick without shared clocks, ordering, or synchronization.";
+      } else if (complete && app.scenarioKey === "conflict") {
+        verdict = "Conflict Visible";
+        detail = "The conflicting scenario remains visible. Structural Time does not permit false convergence from incompatible claims.";
+      } else if (anyProgress) {
+        verdict = "In Progress";
+        detail = "Nodes are processing different arrival orders. Structural outcome is not final yet.";
+      }
+
+      $("structuralBox").innerHTML = `
+        <div><strong>${verdict}</strong></div>
+        <div style="margin-top:8px;">${detail}</div>
+        <div style="margin-top:12px; display:grid; gap:8px;">
+          <div class="mono">ticks = [${ticks.join(", ")}]</div>
+          <div class="mono">hashes = [${hashes.join(", ")}]</div>
+          <div class="mono">structural_time_equal = ${complete ? allEqualTick : "--"}</div>
+          <div class="mono">truth_identity_equal = ${complete ? allEqualHash : "--"}</div>
+        </div>
+      `;
+
+      $("metricTraditional").textContent = app.scenarioKey === "conflict" ? "Conflict" : "Divergent";
+      $("metricStructural").textContent = verdict;
+      $("metricTimeEqual").textContent = complete ? (allEqualTick ? "Yes" : "No") : "--";
+      $("metricTruthEqual").textContent = complete ? (allEqualHash ? "Yes" : "No") : "--";
+      $("summaryBox").textContent = detail;
+    }
+
+    function renderHeader() {
+      const scenario = scenarios[app.scenarioKey];
+      const maxPointer = Math.max(...Object.values(app.pointers));
+      $("metricScenario").textContent = scenario.label;
+      $("metricStep").textContent = `${maxPointer} / ${app.maxSteps}`;
+    }
+
+    function renderAll() {
+      renderHeader();
+      renderNodes();
+      renderTraditional();
+      renderStructural();
+    }
+
+    $("scenarioSelect").addEventListener("change", (e) => initScenario(e.target.value));
+    $("stepBtn").addEventListener("click", stepAll);
+    $("playBtn").addEventListener("click", togglePlay);
+    $("resetBtn").addEventListener("click", () => initScenario(app.scenarioKey));
+
+    initScenario("base");
+  </script>
+</body>
+</html>
