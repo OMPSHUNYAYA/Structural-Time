@@ -1,0 +1,99 @@
+STRUCTURAL TIME (STIME) — VERIFICATION GUIDE
+
+Purpose
+
+Reproduce and verify structural time resolution without clocks, order, or synchronization.
+This process demonstrates that structural time emerges deterministically from valid structural transitions, independent of clocks, order, or synchronization.
+
+Step 1 — Run Demo (Base)
+
+python demo\structural_time.py
+
+Observe:
+
+same events
+different arrival orders
+no clocks
+no timestamps
+independent execution
+
+→ same structural time
+
+Step 2 — Run AI Demo
+
+python demo\structural_time_ai_demo.py
+
+Observe:
+
+valid transitions → time advances
+duplicate inputs → NO_CHANGE
+invalid transitions → ABSTAIN
+
+→ deterministic structural progression
+
+Step 3 — Interactive Demo
+
+Open:
+
+demo\structural_time_interactive_demo.html
+
+Use controls to:
+
+add transitions
+replay sequences
+change input order
+
+Observe:
+
+same structure → same structural time
+
+Step 4 — Verify Determinism
+
+Repeat execution multiple times.
+Change input order where applicable.
+
+Expected:
+
+identical structural time
+no dependency on order or timing
+
+Re-run across independent environments if possible.
+
+Step 5 — Verify Integrity (Hash Check)
+
+Run:
+
+certutil -hashfile demo\structural_time.py SHA256
+certutil -hashfile demo\structural_time_ai_demo.py SHA256
+certutil -hashfile demo\structural_time_interactive_demo.html SHA256
+
+Compare with:
+
+VERIFY\FREEZE_DEMO_SHA256.txt
+
+All hashes must match exactly.
+
+Hash equality confirms byte-level identity of the reference implementation.
+
+Note: Structural Time is not a replacement for physical clocks or wall-clock time measurement. It defines a structural progression model derived from valid transitions.
+
+Expected Structural Guarantees
+
+deterministic behavior
+order independence
+no clock dependency
+idempotent duplicate handling
+invalid transition rejection (ABSTAIN)
+monotonic structural time progression
+replay-verifiable outcomes
+
+Conclusion
+
+If structure is preserved, time converges.
+If hashes match, implementation is intact.
+
+STRUCTURAL TIME (STIME)
+Time Without Clocks — Structural Transition System
+
+Time is not measured.
+Time is resolved.

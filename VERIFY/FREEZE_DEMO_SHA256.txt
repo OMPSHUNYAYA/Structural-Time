@@ -1,0 +1,10 @@
+STRUCTURAL TIME (STIME) — DEMO FREEZE (SHA256)
+
+demo\structural_time.py
+3e8900b08d49979f7d4ea6102243da900ed2f4f24583f044272fd5dfc7d93e59
+
+demo\structural_time_ai_demo.py
+000c595367a55c807a6aa8aa786c4619c7be09ea202144fae8eb81f8624874ab
+
+demo\structural_time_interactive_demo.html
+1968df3e5f5b9b6833dfc8a12bac6dd6d082db6dafe9e3a96ab751e0eb59b201
