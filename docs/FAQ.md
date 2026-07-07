@@ -1,662 +1,882 @@
 # ⭐ FAQ — Structural Time (STIME)
 
-**Time Without Clocks — Structural Transition System**  
-**Deterministic • Order-Free • Time-Independent • Structure-Derived Time**
+**Structural Progression Without Physical Clocks — Reference Transition System**  
+**Deterministic Resolution • Supported Order Independence • Explicit Abstention • Structure-Derived Progression**
 
-**No Clock • No Order • No Coordinator**  
-**No GPS • No NTP • No Internet Required for Temporal Consistency**
+**No Physical Clock Input • No Synchronized Timestamps • No Central Coordinator Used in the Supplied Event-Based Demo**
 
 ---
 
-## **SECTION A — Purpose & Positioning**
+## **SECTION A — Purpose and Positioning**
 
 ### **A1. What is Structural Time (STIME)?**
 
-Structural Time is a **deterministic time resolution system**.
+Structural Time is a bounded structural-progression model.
 
-Instead of deriving time from:
+Instead of measuring elapsed physical time, STIME derives a structural-time value from:
 
-- clocks  
+- declared structural input  
+- explicit acceptance rules  
+- deterministic transition or normalization behaviour  
+
+**Elapsed time is not measured inside STIME.**  
+**Structural progression is resolved from structure and rules.**
+
+---
+
+### **A2. What problem does Structural Time explore?**
+
+Many systems use:
+
+- physical clocks  
 - timestamps  
-- synchronization  
-- global time standards  
+- ordered logs  
+- synchronization services  
+- causal metadata  
 
-Structural Time derives time from:
+These mechanisms remain important for physical time, scheduling, causality, and coordination.
 
-- valid structural transitions  
-- deterministic state evolution  
+STIME explores a narrower question:
 
-**Time is not measured.**  
-**Time is resolved from structure.**
+**Can bounded structural progression be resolved without using physical clock input or synchronized timestamps as the governing authority?**
 
----
-
-### **A2. What problem does Structural Time solve?**
-
-Modern systems assume:
-
-- synchronized clocks  
-- consistent timestamps  
-- ordered execution  
-- reliable time sources  
-
-These assumptions fail under:
-
-- offline systems  
-- distributed environments  
-- delayed or unordered events  
-- clock drift or spoofing  
-- independent system execution  
-
-Structural Time removes this dependency.
-
-It enables systems to:
-
-- operate without clocks  
-- remain consistent without synchronization  
-- converge to the same time purely from structure  
+The supplied reference models demonstrate that this is possible within their declared rules and examples.
 
 ---
 
-### **A3. What does “time without clocks” mean?**
+### **A3. What does “structural progression without physical clocks” mean?**
 
-It means:
+It means that the structural-time value is not calculated from:
 
-- time is not externally measured  
-- time is not dependent on physical clocks  
-- time is not derived from timestamps  
+- elapsed seconds  
+- calendar time  
+- timestamps  
+- GPS time  
+- NTP synchronization  
 
-Instead:
-
-- time is the count of valid structural transitions  
-
----
-
-### **A4. Core idea in one line**
-
-`structural_time = count(accepted transitions)`
+Instead, it is derived from accepted structural outcomes.
 
 ---
 
-### **A5. Is Structural Time replacing real-world time?**
+### **A4. What are the two reference models?**
+
+The repository contains two related models.
+
+#### **Event-Based Model**
+
+Structural time counts first-seen accepted resulting structural states.
+
+`event_structural_time = count(first-seen accepted resulting structural states)`
+
+#### **Normalized-Structure Model**
+
+Structural time counts the accepted elements of normalized input structure.
+
+`normalized_structural_time = count(accepted normalized structure)`
+
+The models use related principles, but they do not use an identical counting rule.
+
+---
+
+### **A5. Is STIME replacing real-world time?**
 
 **No.**
 
-Structural Time does not replace physical time.
+STIME does not replace:
 
-It replaces the need for time in **correctness systems**.
+- wall clocks  
+- physical timestamps  
+- calendars  
+- duration measurement  
+- deadlines  
+- scheduling systems  
+- causal clocks  
+- consensus protocols  
 
-**Use cases:**
-- correctness validation  
-- distributed consistency  
-- event resolution  
-- audit systems  
-
-**Not intended for:**
-- scheduling  
-- human timekeeping  
-- calendar systems  
+It is a structural-resolution model, not a physical-time system.
 
 ---
 
-### **A6. Is this similar to logical clocks (Lamport clocks, vector clocks)?**
+### **A6. Is STIME similar to Lamport or vector clocks?**
 
-**No.**
+They address different questions.
 
-Key difference:
+- physical clocks represent physical or civil time  
+- Lamport clocks provide logical ordering compatible with causality  
+- vector clocks represent causal history and identify concurrency  
+- STIME resolves bounded structural progression from accepted structure  
 
-- Logical clocks → depend on ordering or causality tracking  
-- Structural Time → depends only on valid structural transitions  
-
-**No ordering assumptions required.**
+STIME does not provide causal ordering or concurrency detection.
 
 ---
 
 ### **A7. Is Structural Time a clock?**
 
-**No.**
+Not in the conventional physical or logical-clock sense.
 
-It is a **structural progression system**, not a timekeeping device.
-
----
-
-### **A8. Why is this needed if clocks already exist?**
-
-Because clocks introduce fragility:
-
-- drift  
-- inconsistency  
-- synchronization dependency  
-- vulnerability to manipulation  
-
-Structural Time provides:
-
-- deterministic consistency  
-- offline operation  
-- replay-safe correctness  
+It is a structural-progression representation produced by declared resolution rules.
 
 ---
 
-## **SECTION B — Structural Time Model**
+### **A8. Why explore STIME if clocks already exist?**
 
-### **B1. What is a “structural transition”?**
+Clocks are necessary for many purposes, but not every correctness or validation decision must be governed solely by time or arrival sequence.
 
-A structural transition is a **valid change in system state**.
+STIME explores whether selected workflows can instead use:
 
-Example:
+- accepted structure  
+- explicit refusal  
+- duplicate suppression  
+- deterministic replay  
+- state comparison  
+
+---
+
+## **SECTION B — Structural Time Models**
+
+### **B1. What is a structural transition?**
+
+In the event-based reference, a structural transition is an accepted change to the declared structural state.
+
+Examples include:
 
 - opening an account  
-- creating a transaction  
-- confirming a transaction  
-
-Only transitions that **change valid structure** advance time.
+- creating a valid pending transaction  
+- confirming an existing pending transaction  
 
 ---
 
-### **B2. When does time advance?**
+### **B2. When does event-based structural time advance?**
 
-Time advances only when:
+It advances when an accepted transition produces a resulting structural state that the node has not previously counted.
 
-- structure changes  
-- the change is valid  
-- the change is not a duplicate  
+`accepted first-seen resulting state -> ADVANCED`
 
 ---
 
-### **B3. What does NOT advance time?**
+### **B3. What does not advance event-based time?**
 
-- duplicate events → **NO_CHANGE**  
-- invalid events → **ABSTAIN**
-
----
-
-### **B4. Why ignore duplicates?**
-
-Because duplicates do not represent new reality.
-
-**Time reflects change — not repetition.**
+- duplicate or already represented input → `NO_CHANGE`  
+- invalid, premature, unknown, or incompatible input → `ABSTAIN`  
 
 ---
 
-### **B5. Why abstain on invalid events?**
+### **B4. Why do duplicates return `NO_CHANGE`?**
 
-Because invalid transitions should not distort time.
+A duplicate does not produce a new structural state.
 
-**Incorrect structure must not advance time.**
-
----
-
-### **B6. What guarantees determinism?**
-
-Given the same structure:
-
-**same accepted structure → same structural time**
+It therefore does not create additional structural progression.
 
 ---
 
-### **B7. What defines “valid”?**
+### **B5. Why does invalid or premature input return `ABSTAIN`?**
 
-A transition is valid if:
+The model refuses to advance when the declared acceptance conditions are not satisfied.
 
-- required conditions are met  
-- no structural conflict exists  
-- rules are satisfied  
+A premature event may be accepted later if the required structure becomes available and the event is presented again.
 
 ---
 
-### **B8. Can time go backward?**
+### **B6. How does the normalized-structure model work?**
 
-**No.**
+The model:
 
-Structural Time is **monotonic**:
+1. removes duplicates  
+2. sorts the supplied signals into canonical form  
+3. checks declared conflict pairs  
+4. derives accepted structure  
+5. calculates the structural-time value  
 
-- it only advances  
-- it never decreases  
+For conflict-free input:
+
+`normalized_structural_time = count(accepted normalized structure)`
+
+For declared conflict:
+
+`state = ABSTAIN`
 
 ---
 
-### **B9. Can different systems have different intermediate time?**
+### **B7. What defines valid or accepted structure?**
+
+Validity is determined by the frozen rules of the relevant model.
+
+Examples include:
+
+- required fields are present  
+- referenced accounts already exist  
+- amounts are positive  
+- transaction identifiers do not contain incompatible claims  
+- normalized signals do not contain declared conflict pairs  
+
+STIME does not determine validity without declared rules.
+
+---
+
+### **B8. Can structural time go backward?**
+
+In the event-based reference, the local tick is monotonic. It does not decrease during the life of a node.
+
+The normalized-structure model derives a value separately from each supplied structure. It should not automatically be interpreted as a persistent monotonic counter across unrelated inputs.
+
+---
+
+### **B9. Can different systems have different intermediate structural times?**
 
 **Yes.**
 
-But:
+Independent nodes may temporarily hold:
 
-**final structural time converges when structure converges**
+- different structural states  
+- different structural-time ticks  
+- different accepted information  
 
----
-
-### **B10. Is time continuous or discrete?**
-
-Structural Time is **discrete**.
-
-Each tick represents a valid structural transition.
+Structural-time equality and state identity must be evaluated separately.
 
 ---
 
-## **SECTION C — Multi-Node Behavior**
+### **B10. Is structural time continuous or discrete?**
 
-### **C1. Why use multiple nodes?**
+It is discrete in the supplied reference models.
 
-To demonstrate independence:
-
-- no shared clocks  
-- no synchronization  
-- no coordination  
+The value is derived from counted structural outcomes, not continuously measured duration.
 
 ---
 
-### **C2. Do nodes need identical event order?**
+## **SECTION C — Multi-Node Behaviour**
+
+### **C1. Why does the event-based demo use multiple nodes?**
+
+It demonstrates that nodes can process locally without:
+
+- a shared physical clock  
+- synchronized timestamps  
+- a central coordinator  
+
+The nodes receive different supported event streams, including premature and repeated attempts.
+
+---
+
+### **C2. Do the nodes receive exactly the same event history?**
 
 **No.**
 
-Nodes may receive:
+The supplied nodes process equivalent target structure through different event streams.
 
-- different orders  
-- delayed events  
-- incomplete information  
+Some streams contain:
 
----
+- different arrival orders  
+- premature attempts  
+- repeated attempts  
 
-### **C3. Do nodes need synchronized time?**
-
-**No.**
-
-Structural Time removes the need for synchronization.
+Their intermediate accepted states are not identical.
 
 ---
 
-### **C4. Why do nodes converge?**
+### **C3. Do nodes need synchronized physical time?**
 
-Because:
+**No, not for the demonstrated structural-time calculations.**
 
-**same accepted structure → same time**
+Physical clock input and timestamp synchronization are not used by the supplied resolution algorithms.
 
 ---
 
-### **C5. What happens during convergence?**
+### **C4. Why do the event-based nodes finish with the same tick?**
 
-- incomplete → complete  
-- invalid → ignored  
-- duplicates → ignored  
+Each supplied base-scenario stream accumulates four first-seen accepted resulting structural states.
 
-Final state:
+Therefore, each finishes with the same event-based structural-time count.
 
-- same structure  
-- same time  
+---
+
+### **C5. Why do the base-scenario nodes finish with the same state?**
+
+Although their intermediate states differ, all supplied base-scenario streams eventually reach the same canonical final structure.
+
+The demonstration represents this with matching state hashes.
 
 ---
 
 ### **C6. Is communication required?**
 
-Only to share structure.
+Local structural resolution can operate offline.
 
-Not required for:
+However, cross-node convergence may require:
 
-- time alignment  
-- synchronization  
+- communication  
+- storage transfer  
+- event retry  
+- reconciliation  
+- eventual sharing of relevant structure  
+
+STIME does not create agreement without information.
 
 ---
 
-### **C7. Is a central authority required?**
+### **C7. Is a central coordinator required?**
+
+The supplied demos do not use a central coordinator to calculate structural time.
+
+This does not mean that every operational system can eliminate coordination for all other purposes.
+
+---
+
+### **C8. Does STIME guarantee universal order independence?**
 
 **No.**
 
-Time emerges from structure, not authority.
+The repository demonstrates order or grouping independence only for supported inputs, rules, and scenarios.
+
+Arbitrary transition systems may remain order-sensitive.
 
 ---
 
-## **SECTION D — Structural Time States**
+## **SECTION D — Resolution States**
 
-- **ADVANCED** → valid transition, time increases  
-- **NO_CHANGE** → duplicate, time unchanged  
-- **ABSTAIN** → invalid, ignored  
+### **Event-Based Reference**
 
----
+- `ADVANCED` → an accepted transition produces a new counted structural state  
+- `NO_CHANGE` → the input does not change the represented structure  
+- `ABSTAIN` → the input is invalid, premature, unknown, or incompatible  
 
-## **SECTION E — Demo Behavior**
+### **Normalized-Structure Reference**
 
-### **E1. What does the demo show?**
-
-- independent nodes  
-- unordered events  
-- no clocks  
-- convergence to same time  
+- `ADVANCED` → non-empty, conflict-free normalized structure is accepted  
+- `NO_CHANGE` → no accepted structure is present  
+- `ABSTAIN` → a declared conflict is detected  
 
 ---
 
-### **E2. Why do nodes initially differ?**
+## **SECTION E — Demo Behaviour**
 
-Because:
+### **E1. What does the event-based Python demo show?**
 
-- events arrive differently  
-- structure is incomplete  
+It shows:
 
----
-
-### **E3. Why do they converge later?**
-
-Because:
-
-- structure becomes complete  
-- invalid paths are ignored  
+- three independent nodes  
+- different supported event streams  
+- premature-event refusal  
+- duplicate suppression  
+- different intermediate states  
+- equal final structural-time ticks  
+- the same final canonical state  
 
 ---
 
-### **E4. What is the final guarantee?**
+### **E2. What does the normalized-structure Python demo show?**
 
-- same structural time  
-- same structural state hash  
+It shows:
 
----
-
-### **E5. What does the demo NOT claim?**
-
-It does not claim:
-
-- replacement of physical time  
-- universal time system  
-- real-time scheduling  
-
-It demonstrates:
-
-- structural consistency of time  
+- signal normalization  
+- duplicate removal  
+- conflict detection  
+- structural-time derivation  
+- deterministic certificates  
+- supported permutation independence  
+- explicit refusal of declared conflict  
 
 ---
 
-## **SECTION F — Determinism & Trust**
+### **E3. What does the interactive demo show?**
 
-Given identical structure:
+It provides two scenarios:
 
-`resolve(accepted_structure) -> same time`
+#### **Base Convergence**
 
-This ensures:
+The nodes finish with:
 
-- reproducibility  
-- auditability  
-- cross-system agreement  
+- equal structural-time ticks  
+- matching final state representations  
+
+#### **Conflict Scenario**
+
+Nodes may finish with:
+
+- equal structural-time ticks  
+- different final state hashes  
+
+This demonstrates:
+
+`same structural time != same structural state`
 
 ---
 
-## **SECTION G — Safety Model**
+### **E4. Why do the nodes initially differ?**
 
-Structural Time prevents:
+Because their event streams contain different:
 
-- false time advancement  
-- invalid transitions  
-- duplicate distortion  
+- arrival orders  
+- premature attempts  
+- accepted intermediate states  
+
+Intermediate divergence is permitted.
+
+---
+
+### **E5. What must be checked at the end?**
+
+At least two questions must remain separate:
+
+- Are the structural-time values equal?  
+- Are the final structural states equal?  
+
+Equal time alone does not prove equal state.
+
+---
+
+### **E6. What do matching state hashes mean?**
+
+The demos use hashes as compact evidence that canonical states match.
+
+For rigorous verification, the canonical state itself may also be compared. Hash equality should not be treated as an absolute mathematical proof of state identity.
+
+---
+
+### **E7. What do the demos not claim?**
+
+They do not establish:
+
+- universal distributed-system convergence  
+- universal order independence  
+- consensus  
+- causal ordering  
+- physical-time replacement  
+- scheduling capability  
+- safety certification  
+- correctness for arbitrary transition rules  
+
+---
+
+## **SECTION F — Determinism and Replay**
+
+### **F1. What makes the event-based model deterministic?**
+
+Its outcome depends on:
+
+- supplied event content  
+- frozen transition rules  
+- deterministic canonical-state construction  
+- implementation behaviour  
+
+The supplied event streams reproduce their documented results under the same rules and implementation version.
+
+---
+
+### **F2. What makes the normalized-structure model deterministic?**
+
+The model uses:
+
+- deduplication  
+- sorting  
+- declared conflict pairs  
+- deterministic acceptance rules  
+- deterministic certificate construction  
+
+`same accepted normalized structure + same frozen rules -> same normalized structural time`
+
+---
+
+### **F3. What is required for the same certificate?**
+
+The normalized-structure certificate includes:
+
+- normalized input structure  
+- resolution state  
+- structural-time value  
+- accepted structure  
+
+Therefore:
+
+`same normalized input structure + same rules + same implementation version -> same certificate`
+
+---
+
+### **F4. Is replay guaranteed under every implementation change?**
+
+**No.**
+
+Changes to:
+
+- transition rules  
+- normalization  
+- conflict definitions  
+- canonical serialization  
+- certificate construction  
+- implementation behaviour  
+
+may change results.
+
+Rules and implementation versions should therefore be recorded or frozen for reproducible replay.
+
+---
+
+## **SECTION G — Safety and Trust Boundary**
+
+### **G1. What does STIME refuse?**
+
+Within the declared models, it refuses:
+
+- malformed input  
+- premature transitions  
+- incompatible transaction claims  
+- declared signal conflicts  
+
+---
+
+### **G2. Does `ABSTAIN` prove that all accepted input is true?**
+
+**No.**
+
+`ABSTAIN` enforces declared structural rules.
+
+It does not independently prove:
+
+- real-world truth  
+- authenticity  
+- authorization  
+- legal validity  
+- absence of fraud  
+- correctness of the rules themselves  
+
+---
+
+### **G3. Can STIME be manipulated?**
+
+An attacker may attempt to manipulate the supplied structure or the governing rules.
+
+STIME therefore does not replace:
+
+- authentication  
+- authorization  
+- cryptographic verification  
+- access control  
+- consensus  
+- independent evidence validation  
+
+---
+
+### **G4. Does structural-time equality establish trust?**
+
+**No.**
+
+Equal structural-time values only establish equal values under the relevant counting model.
+
+State identity, rule identity, provenance, and evidence may still need separate verification.
 
 ---
 
 ## **SECTION H — Comparison**
 
-**Traditional Time**
+### **Physical Clocks**
 
-- clock-based  
-- synchronization dependent  
-- order-sensitive  
+- measure physical or civil time  
+- support duration, deadlines, and scheduling  
+- may require synchronization for cross-system alignment  
 
-**Structural Time**
+### **Lamport Clocks**
 
-- structure-based  
-- synchronization-free  
-- order-independent  
+- provide scalar logical ordering  
+- preserve happened-before implication  
+- do not identify concurrency by themselves  
 
----
+### **Vector Clocks**
 
-## **SECTION I — Unified Time Insight**
+- represent causal history  
+- identify concurrent events  
+- require causal metadata exchange  
 
-Structural Time enables:
+### **Structural Time**
 
-- a single consistent time representation  
-- independent of geography  
-- independent of time zones  
-- independent of clocks  
-
-Each system derives:
-
-- the same time from the same structure  
-
----
-
-## **SECTION J — Practical Applications**
-
-- distributed systems  
-- financial ledgers  
-- audit systems  
-- AI pipelines  
-- edge computing  
-- offline systems  
+- resolves bounded structural progression  
+- uses explicit acceptance and refusal  
+- does not provide physical time  
+- does not provide causal ordering  
+- does not provide consensus  
 
 ---
 
-## **SECTION K — What This Challenges**
+## **SECTION I — Same Time and Same State**
 
-Traditional assumption:
+### **I1. Does the same structural time imply the same structure?**
 
-`time = measurement + synchronization`
+**No.**
 
-Structural Time shows:
+`same structural time != same structural state`
 
-`time = structure`
+Two nodes may count the same number of accepted resulting states while holding different final structures.
+
+---
+
+### **I2. Does the same final state imply the same event-based structural time?**
+
+Not necessarily in every possible model or history.
+
+Two paths may theoretically reach the same final state after different numbers of counted intermediate states.
+
+The supplied base scenario happens to reach both:
+
+- the same final structural-time tick  
+- the same final canonical state  
+
+---
+
+### **I3. What should systems compare?**
+
+Depending on the application, they may compare:
+
+- structural-time value  
+- canonical structural state  
+- state hash  
+- accepted structure  
+- normalized input structure  
+- certificate  
+- rule and implementation version  
+
+---
+
+## **SECTION J — Potential Applications**
+
+STIME may be explored as a bounded component in:
+
+- validation workflows  
+- audit trails  
+- replay systems  
+- offline processing  
+- distributed reconciliation  
+- financial-state experiments  
+- AI signal resolution  
+- edge systems  
+- deterministic test environments  
+
+These are research and implementation directions, not guarantees of production suitability.
+
+---
+
+## **SECTION K — Research Question**
+
+Conventional systems often ask:
+
+`What time did this occur?`
+
+STIME additionally asks:
+
+`Has the declared structure changed in a way that the active rules accept as structural progression?`
+
+The questions are complementary rather than interchangeable.
 
 ---
 
 ## **SECTION L — Boundaries**
 
-Structural Time:
+STIME does not:
 
-- does not replace wall clocks  
-- does not track physical time  
-- does not schedule events  
+- measure elapsed physical time  
+- replace clocks or timestamps  
+- schedule events  
+- calculate latency  
+- establish causality  
+- detect concurrency  
+- provide consensus  
+- guarantee universal convergence  
+- validate arbitrary real-world truth  
 
-It ensures:
-
-- correct temporal consistency  
+STIME does demonstrate bounded structural resolution under explicit rules.
 
 ---
 
-## **SECTION M — Skeptic & Deep Technical Questions**
+## **SECTION M — Skeptical and Technical Questions**
 
-### **M1. If two systems see different structures, will time differ?**
+### **M1. If two systems see different structures, must their structural times differ?**
 
-**Yes.**
+**No.**
 
-- different structure → different time  
-- same structure → same time  
+Different structures may produce:
 
-Time converges only when structure converges.
+- different structural times  
+- or the same structural time  
+
+That is why structural-time equality and structural-state equality must be checked separately.
 
 ---
 
 ### **M2. What ensures eventual convergence?**
 
-Nothing is forced.
+Nothing forces convergence.
 
-Convergence happens only if:
+Convergence occurs only when the requirements of the relevant model are met.
 
-- systems eventually observe the same valid structure  
+For the event-based model, equal structural time requires equal counts of first-seen accepted resulting states. Equal final state additionally requires the same final canonical structure.
 
-If structure never aligns:
-
-- time remains different  
-- disagreement remains visible  
-
-**Structural Time prefers honest divergence over false agreement.**
+For the normalized-structure model, equivalent accepted normalized structure produces the same normalized structural-time value.
 
 ---
 
-### **M3. Can Structural Time be manipulated?**
+### **M3. Can invalid input advance structural time?**
 
-Only by manipulating structure itself.
+In the supplied event-based implementation, invalid or premature input returns `ABSTAIN` and does not advance the tick.
+
+Incompatible declared structure is also refused under the relevant rules.
+
+---
+
+### **M4. What happens under conflicting inputs?**
+
+In the normalized-structure model:
+
+`declared conflict -> ABSTAIN`
+
+In the event-based conflict scenario, nodes may hold equal ticks but different final states.
+
+Conflict remains visible rather than being converted into false state agreement.
+
+---
+
+### **M5. Does STIME work with delayed or out-of-order delivery?**
+
+The supplied demonstrations tolerate specific delayed, premature, repeated, or differently ordered inputs.
 
 However:
 
-- invalid inputs → **ABSTAIN**  
-- duplicates → **NO_CHANGE**
-
-So:
-
-- time cannot be advanced without valid structural change  
+- premature inputs may need to be retried  
+- permanently missing structure may prevent convergence  
+- arbitrary order independence is not guaranteed  
 
 ---
 
-### **M4. What happens under conflicting inputs across nodes?**
-
-- structural_time may still match  
-- but state hash will differ  
-
-Result:
-
-- conflict is visible, not hidden  
-
----
-
-### **M5. Does Structural Time depend on event delivery guarantees?**
+### **M6. Is STIME merely counting events?**
 
 **No.**
 
-Works with:
+The event-based reference does not count all raw events.
 
-- delayed delivery  
-- out-of-order delivery  
-- partial visibility  
+It counts first-seen accepted resulting structural states.
 
-Correctness depends only on:
+Ignored or refused inputs do not advance the count.
 
-- final structure  
+`event_structural_time != total received events`
 
 ---
 
-### **M6. Is Structural Time just counting events?**
-
-**No.**
-
-It counts only **accepted structural transitions**, not raw events.
-
-Ignored:
-
-- duplicates → **NO_CHANGE**  
-- invalid inputs → **ABSTAIN**
-
-Therefore:
-
-`structural_time != total_events`  
-`structural_time = count(accepted transitions)`
-
----
-
-### **M7. What prevents two different structures from having same time?**
+### **M7. What prevents two different states from having the same time?**
 
 Nothing.
 
-That’s why:
+The structural-time value is not intended to be a globally unique state identifier.
 
-- `structural_time_equal != structural_state_equal`
-
-Both must be checked:
-
-- structural_time_equal  
-- structural_state_equal  
+Use separate state comparison when state identity matters.
 
 ---
 
-### **M8. Is Structural Time equivalent to versioning?**
+### **M8. Is STIME equivalent to version numbering?**
 
 **No.**
 
-- Versioning → depends on sequence  
-- Structural Time → depends on valid transitions  
+Version numbers usually identify releases or revisions according to a chosen versioning policy.
+
+STIME derives a bounded structural-time value from explicit structural-resolution rules.
+
+The concepts may be used together, but they are not identical.
 
 ---
 
-### **M9. How is this different from event sourcing?**
+### **M9. How is STIME different from event sourcing?**
 
-- Event sourcing → replays ordered logs  
-- Structural Time → ignores order, resolves structure  
+Event sourcing generally stores events and reconstructs state by replaying them according to application rules.
 
----
+STIME focuses on how accepted structural outcomes contribute to a structural-time value.
 
-### **M10. What is the biggest limitation of Structural Time?**
-
-Requires:
-
-- well-defined validity rules  
-
-Without rules:
-
-- structure cannot be evaluated  
-- time cannot be resolved  
+The event-based reference may be studied alongside event-sourced systems, but it is not a replacement for event storage, causality, or log governance.
 
 ---
 
-### **M11. Does Structural Time work in real-time systems?**
+### **M10. What is the main limitation of STIME?**
 
-**Yes — for correctness.**
+It requires well-defined and appropriate structural rules.
 
-Not for:
+Without reliable rules:
 
+- valid change cannot be distinguished from invalid change  
+- conflict cannot be evaluated consistently  
+- replay may not be stable  
+- the structural-time value may not be meaningful  
+
+---
+
+### **M11. Can STIME be used in real-time systems?**
+
+It may be explored as a structural-validation or audit component.
+
+It does not provide:
+
+- wall-clock deadlines  
 - scheduling  
 - latency guarantees  
+- real-time operating-system behaviour  
 
 ---
 
-### **M12. What is the biggest conceptual shift?**
+### **M12. What is the main conceptual shift?**
 
-From:
+The conventional question is often:
 
-- time defines correctness  
+`What time did the event occur?`
 
-To:
+The STIME question is:
 
-- correctness defines time  
-
----
-
-### **M13. How does Structural Time apply to AI-style signals?**
-
-Example:
-
-`['fever', 'cough', 'fatigue'] → structural_time = 3`
-
-Applies to:
-
-- transactions  
-- events  
-- signals  
-- decisions  
+`What accepted structural progression has occurred under the declared rules?`
 
 ---
 
-### **M14. Can two systems have the same time but different truth?**
+### **M13. How does STIME apply to AI-style signals?**
+
+For a conflict-free normalized structure such as:
+
+`['cough', 'fatigue', 'fever']`
+
+the normalized-structure reference resolves:
+
+`normalized_structural_time = 3`
+
+If a declared conflict is present, such as:
+
+`['fatigue', 'no_fatigue']`
+
+the result is:
+
+`ABSTAIN`
+
+---
+
+### **M14. Can two systems have the same structural time but different final states?**
 
 **Yes.**
 
+The interactive conflict scenario demonstrates equal structural-time counts with different final state representations.
+
+Therefore:
+
 `structural_time_equal != structural_state_equal`
 
-Correctness requires both:
+---
 
-- structural_time_equal  
-- structural_state_equal  
+### **M15. Why is STIME not already a standard system?**
+
+STIME is a reference implementation and research model.
+
+Broader adoption would require:
+
+- formal specification  
+- domain-specific rule design  
+- independent testing  
+- security analysis  
+- failure-mode analysis  
+- interoperability work  
+- production validation  
+
+The repository demonstrates bounded implementation behaviour. It does not claim standardization or universal applicability.
 
 ---
 
-### **M15. Why isn’t this already standard?**
+## ⭐ **FINAL ONE-LINE SUMMARY**
 
-Because systems rely on:
-
-- time-first thinking  
-- sequence-first logic  
-- synchronization assumptions  
-
-Structural Time requires a shift:
-
-- structure → defines time  
-
-Adoption is not technical difficulty.  
-It is a **conceptual shift**.
-
----
-
-## ⭐ FINAL ONE-LINE SUMMARY
-
-**Structural Time (STIME) is a deterministic structural time model in which independent systems receiving unordered, delayed, and unsynchronized events converge to the same time without clocks or synchronization—by advancing time only on valid structural transitions and ignoring duplicates or invalid states.**
+**Structural Time (STIME) is a bounded structural-progression model that derives structural-time values from declared input and explicit acceptance rules without using physical clock input or synchronized timestamps, while keeping structural-time equality separate from structural-state identity.**
