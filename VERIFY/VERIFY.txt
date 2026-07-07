@@ -1,65 +1,127 @@
 STRUCTURAL TIME (STIME) — VERIFICATION GUIDE
 
+
 Purpose
 
-Reproduce and verify structural time resolution without clocks, order, or synchronization.
-This process demonstrates that structural time emerges deterministically from valid structural transitions, independent of clocks, order, or synchronization.
+Reproduce and verify the bounded behaviour of the supplied Structural Time reference demonstrations.
 
-Step 1 — Run Demo (Base)
+The demonstrations resolve structural-time values without physical clock input or synchronized timestamps.
+
+They demonstrate supported event-order tolerance and normalized permutation independence within their declared rules and scenarios.
+
+They do not establish universal order independence, universal convergence, consensus, or physical-time replacement.
+
+
+Step 1 — Run Event-Based Demo
+
+Run:
 
 python demo\structural_time.py
 
 Observe:
 
-same events
-different arrival orders
-no clocks
-no timestamps
-independent execution
+three independent nodes
+different supported event streams
+premature inputs → ABSTAIN
+accepted state-changing transitions → ADVANCED
+no physical clock input
+no synchronized timestamps
 
-→ same structural time
+Expected final result:
 
-Step 2 — Run AI Demo
+Node-A tick = 4
+Node-B tick = 4
+Node-C tick = 4
+
+All three final displayed state-hash prefixes should match.
+
+This represents:
+
+equal final structural-time ticks
+the same final canonical structural state
+
+
+Step 2 — Run Normalized-Structure Demo
+
+Run:
 
 python demo\structural_time_ai_demo.py
 
 Observe:
 
-valid transitions → time advances
-duplicate inputs → NO_CHANGE
-invalid transitions → ABSTAIN
+duplicate signals are removed during normalization
+conflict-free accepted structure → ADVANCED
+empty accepted structure → NO_CHANGE
+declared conflict → ABSTAIN
+six supplied permutations are checked
 
-→ deterministic structural progression
+Expected final checks:
 
-Step 3 — Interactive Demo
+Reference structural time = 3
+Replay structural time = 3
+Reference matching replay = True
+Matching certificate = True
+Permutation independence = True
+Conflict visible = True
+No forced convergence = True
+No accepted conflict state = True
+
+
+Step 3 — Run Interactive Demo
 
 Open:
 
 demo\structural_time_interactive_demo.html
 
-Use controls to:
+Available controls:
 
-add transitions
-replay sequences
-change input order
+Scenario
+Step
+Auto Play
+Reset
 
-Observe:
-
-same structure → same structural time
-
-Step 4 — Verify Determinism
-
-Repeat execution multiple times.
-Change input order where applicable.
+Run the Base Convergence scenario.
 
 Expected:
 
-identical structural time
-no dependency on order or timing
+Structural Time Equal = Yes
+Truth Identity Equal = Yes
 
-Re-run across independent environments if possible.
+Run the Conflict / Abstain scenario.
 
-Step 5 — Verify Integrity (Hash Check)
+Expected:
+
+Structural Time Equal = Yes
+Truth Identity Equal = No
+
+This demonstrates:
+
+same structural time does not necessarily mean the same structural state
+
+
+Step 4 — Verify Determinism
+
+Repeat both Python demonstrations without modifying their files, inputs, rules, or implementation version.
+
+Expected for the event-based demo:
+
+identical statuses
+identical final ticks
+identical final displayed state-hash prefixes
+
+Expected for the normalized-structure demo:
+
+identical normalized structures
+identical structural-time values
+identical certificates
+identical final checks
+
+The supplied results are deterministic under the same inputs, rules, initial conditions, and implementation version.
+
+Do not interpret these tests as proof that every arbitrary event ordering must converge.
+
+
+Step 5 — Verify File Integrity
 
 Run:
 
@@ -67,33 +129,62 @@ certutil -hashfile demo\structural_time.py SHA256
 certutil -hashfile demo\structural_time_ai_demo.py SHA256
 certutil -hashfile demo\structural_time_interactive_demo.html SHA256
 
-Compare with:
+Compare the results with:
 
 VERIFY\FREEZE_DEMO_SHA256.txt
 
 All hashes must match exactly.
 
-Hash equality confirms byte-level identity of the reference implementation.
+Matching hashes confirm that the tested demonstration files are byte-for-byte identical to the files represented by the frozen reference hashes.
 
-Note: Structural Time is not a replacement for physical clocks or wall-clock time measurement. It defines a structural progression model derived from valid transitions.
 
-Expected Structural Guarantees
+Expected Demonstrated Properties
 
-deterministic behavior
-order independence
-no clock dependency
-idempotent duplicate handling
-invalid transition rejection (ABSTAIN)
-monotonic structural time progression
+deterministic behaviour under fixed inputs, rules, and implementation version
+no physical clock input in structural-time calculation
+no synchronized timestamp requirement
+supported event-order tolerance
+normalized set-based permutation independence
+duplicate suppression
+invalid and premature input refusal
+declared conflict visibility
+monotonic event-based structural-time ticks
 replay-verifiable outcomes
+separate structural-time and structural-state verification
+
+
+Boundaries
+
+Structural Time does not replace:
+
+physical clocks
+wall-clock timestamps
+duration measurement
+scheduling
+causal ordering
+concurrency detection
+consensus
+authentication
+authorization
+
+Local structural resolution may operate offline.
+
+Cross-node convergence may still require communication, event transfer, retry, reconciliation, or eventual availability of relevant structure.
+
 
 Conclusion
 
-If structure is preserved, time converges.
-If hashes match, implementation is intact.
+If the supplied files, inputs, rules, initial conditions, and implementation version remain unchanged, the documented results should repeat.
+
+If the verification hashes match, the demonstration files are intact.
+
+Equal structural time does not by itself prove equal structural state.
+
 
 STRUCTURAL TIME (STIME)
-Time Without Clocks — Structural Transition System
 
-Time is not measured.
-Time is resolved.
+Structural Progression Without Physical Clocks — Reference Transition System
+
+Elapsed time is not measured inside STIME.
+
+Bounded structural progression is resolved from declared structural input under explicit acceptance rules.
